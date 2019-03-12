@@ -1,0 +1,14 @@
+projects/
+examples/miniblink/.clang_complete
+examples/miniblink/.gtagsfiles
+examples/miniblink/out
+examples/miniblink/.vscode/.cortex-debug*
+examples/miniblink/.vscode/browse.vc*
+examples/miniblink/.vscode/settings.json
+examples/rtos_blink/.clang_complete
+examples/rtos_blink/.gtagsfiles
+examples/rtos_blink/out
+examples/rtos_blink/.vscode/.cortex-debug*
+examples/rtos_blink/.vscode/browse.vc*
+examples/rtos_blink/.vscode/settings.json
+

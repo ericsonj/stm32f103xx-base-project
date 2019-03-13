@@ -68,6 +68,8 @@ endif
 
 CXXSRC := $(wildcard $(PROJECT_SRC)/*.cpp)
 ASSRC := $(wildcard $(PROJECT_STARTUP)/*.s)
+ASSRC += $(wildcard $(PROJECT_SRC)/*.s)
+PASSRC += $(wildcard $(PROJECT_SRC)/*.S) 
 
 ## INCLUDE
 INCLUDE_FLAGS = -I$(CMSIS_INC) -I$(CMSIS_DEVICE_INC) -I$(HAL_LIBRARY_INC) -I$(HAL_LEGACY_INC) -I$(PROJECT_INC)
@@ -77,7 +79,7 @@ ifeq ($(FREERTOS),y)
 endif
 
 ## OBJECTS
-OBJECTS = $(CSRC:%.c=$(PROJECT_OUT)/%.o) $(CXXSRC:%.cpp=$(PROJECT_OUT)/%.o) $(ASSRC:%.s=$(PROJECT_OUT)/%.o)
+OBJECTS = $(CSRC:%.c=$(PROJECT_OUT)/%.o) $(CXXSRC:%.cpp=$(PROJECT_OUT)/%.o) $(ASSRC:%.s=$(PROJECT_OUT)/%.o) $(PASSRC:%.S=$(PROJECT_OUT)/%.o)
 
 ## CFLAGS
 OPT				:= -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections
@@ -111,6 +113,11 @@ $(PROJECT_OUT)/%.o: %.cpp
 	@touch $@
 
 $(PROJECT_OUT)/%.o: %.s
+	$(call logger-compile,"AS",$(notdir $<))
+	@mkdir -p $(dir $@)
+	$(CC) -MMD $(CFLAGS) -o $@ -c $<
+
+$(PROJECT_OUT)/%.o: %.S
 	$(call logger-compile,"AS",$(notdir $<))
 	@mkdir -p $(dir $@)
 	$(CC) -MMD $(CFLAGS) -o $@ -c $<
